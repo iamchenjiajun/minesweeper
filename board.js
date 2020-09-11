@@ -122,11 +122,16 @@ export default class Board {
     openSquare(rowIndex, colIndex) {
         if (!this.checkValidIndex(rowIndex, colIndex)) return;
         let square = this.grid[rowIndex][colIndex];
+        if (square.getIsFlagged()) return;
+
+        // open the square
         square.open();
 
         // checks for mine
         if (square.getIsMine()) {
-            
+            alert("You lose!");
+            this.resetBoard();
+            return;
         }
 
         // open neighbouring squares if current square is not surrounded by squares
@@ -181,8 +186,8 @@ export default class Board {
 
                 // left click
                 button.onclick = () => {
-                    this.openSquare(i, j);
-                    this.chordSquare(i, j);
+                    if (square.getIsOpened()) this.chordSquare(i, j);
+                    else this.openSquare(i, j);
                 }
 
                 // right click
