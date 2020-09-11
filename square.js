@@ -1,6 +1,6 @@
 export default class Square {
     constructor() {
-        this.opened = false;
+        this.isOpened = false;
         this.isMine = false;
         this.neighbourMineCount = 0;
         this.isFlagged = false;
@@ -11,7 +11,7 @@ export default class Square {
     }
 
     getIsOpened() {
-        return this.opened;
+        return this.isOpened;
     }
 
     getIsMine() {
@@ -28,19 +28,19 @@ export default class Square {
 
     open() {
         if (!this.isFlagged) {
-            this.opened = true;
+            this.isOpened = true;
         }
     }
 
     flag() {
-        if (!this.opened) {
+        if (!this.isOpened) {
             this.isFlagged ^= true;
         }
     }
 
     getButtonContents() {
         if (this.isFlagged) return "⛳";
-        if (this.opened === false) return "❓";
+        if (this.isOpened === false) return "❓";
         else if (this.isMine === true) return "⭐";
         else if (this.neighbourMineCount === 0) return " ";
 
