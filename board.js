@@ -6,6 +6,7 @@ export default class Board {
         this.rows = rows;
         this.columns = columns;
         this.grid;
+        this.mineCount = 0;
         this.resetBoard();
     }
 
@@ -32,6 +33,9 @@ export default class Board {
         for (let i=0; i<this.rows; i++) {
             for (let j=0; j<this.columns; j++) {
                 this.grid[i][j] = new Square();
+                if (this.grid[i][j].getIsMine()) {
+                    this.mineCount++;
+                }
             }
         }
 
