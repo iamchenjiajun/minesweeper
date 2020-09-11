@@ -87,7 +87,9 @@ export default class Square {
                 break;
         }
 
-        if (!this.isOpened) button.style.backgroundColor = "#5c3535";
+        if (!this.isOpened && !this.isFlagged) {
+            button.style.backgroundColor = "#5c3535";
+        }
         
         button.append(content);
         return button;
