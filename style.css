@@ -19,7 +19,7 @@ html, body {
 }
 
 .minesquare {
-    background-color: #f0f0f0;
+    background-color: #2e2e2e;
     margin: 0;
     padding: 0;
     height: var(--minesquare-length);
@@ -30,7 +30,7 @@ html, body {
 }
 
 .minesquare:hover {
-    background-color: skyblue;
+    background-color: gray;
 }
 
 .minesquare-row {

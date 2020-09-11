@@ -48,17 +48,7 @@ export default class Square {
         else if (this.isMine === true) return "⭐";
         else if (this.neighbourMineCount === 0) return " ";
 
-        switch(this.neighbourMineCount) {
-            case 1: return "1️⃣";
-            case 2: return "2️⃣";
-            case 3: return "3️⃣";
-            case 4: return "4️⃣";
-            case 5: return "5️⃣";
-            case 6: return "6️⃣";
-            case 7: return "7️⃣";
-            case 8: return "8️⃣";
-            default: return this.neighbourMineCount;
-        }
+        return this.neighbourMineCount;
     }
 
     makeButton() {
@@ -69,6 +59,32 @@ export default class Square {
         button.className = "minesquare";
         
         content.textContent = this.getButtonContents();
+        switch(this.getButtonContents()) {
+            case 1:
+                button.style.color = "skyblue";
+                break;
+            case 2:
+                button.style.color = "green";
+                break;
+            case 3:
+                button.style.color = "orange";
+                break;
+            case 4:
+                button.style.color = "blue";
+                break;
+            case 5:
+                button.style.color = "red";
+                break;
+            case 6:
+                button.style.color = "teal";
+                break;
+            case 7:
+                button.style.color = "brown";
+                break;
+            case 8:
+                button.style.color = "yellow";
+                break;
+        }
         
         button.append(content);
         return button;
