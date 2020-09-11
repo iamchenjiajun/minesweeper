@@ -99,6 +99,22 @@ export default class Board {
     }
 
     /**
+     * Returns the number of flagged neighbours around a square at a given coordinate
+     * @param {Number} rowIndex 
+     * @param {Number} colIndex 
+     */
+    getNeighbourFlagCount(rowIndex, colIndex) {
+        let count = 0;
+        this.loopNeighbours(rowIndex, colIndex, (neighbourRowIndex, neighbourColIndex) => {
+            let neighbourSquare = this.grid[neighbourRowIndex][neighbourColIndex];
+            if (neighbourSquare.getIsFlagged()) {
+                count++;
+            }
+        });
+        return count;
+    }
+
+    /**
      * Opens the square at given coordinate
      * @param {Number} rowIndex 
      * @param {Number} colIndex 
@@ -126,11 +142,29 @@ export default class Board {
         this.render();
     }
 
+    /**
+     * Flags a square at a given coordinate
+     * @param {Number} rowIndex 
+     * @param {Number} colIndex 
+     */
     flagSquare(rowIndex, colIndex) {
         let square = this.grid[rowIndex][colIndex];
         square.flag();
 
         this.render();
+    }
+
+    chordSquare(rowIndex, colIndex) {
+        let square = this.grid[rowIndex][colIndex];
+        if (!square.getIsOpened()) {
+            return;
+        }
+
+        if (this.getNeighbourFlagCount(rowIndex, colIndex) === square.getNeighbourMineCount()) {
+            this.loopNeighbours(rowIndex, colIndex, (neighbourRowIndex, neighbourColIndex) => {
+                this.openSquare(neighbourRowIndex, neighbourColIndex);
+            });
+        }
     }
 
     /**
@@ -148,6 +182,7 @@ export default class Board {
                 // left click
                 button.onclick = () => {
                     this.openSquare(i, j);
+                    this.chordSquare(i, j);
                 }
 
                 // right click

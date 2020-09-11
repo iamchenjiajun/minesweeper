@@ -14,6 +14,10 @@ export default class Square {
         return this.isOpened;
     }
 
+    getIsFlagged() {
+        return this.isFlagged;
+    }
+
     getIsMine() {
         return this.isMine;
     }
