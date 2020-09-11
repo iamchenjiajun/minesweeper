@@ -6,13 +6,16 @@ export default class Board {
         this.rows = rows;
         this.columns = columns;
         this.grid;
+        this.isFirstClick;
         this.mineCount = 0;
         this.resetBoard();
     }
 
     resetBoard() {
+        this.isFirstClick = true;
         this.create2dArray();
         this.populateWithSquares();
+        this.populateNeighbourMineCount();
         this.render();
     }
 
@@ -36,13 +39,6 @@ export default class Board {
                 if (this.grid[i][j].getIsMine()) {
                     this.mineCount++;
                 }
-            }
-        }
-
-        for (let i=0; i<this.rows; i++) {
-            for (let j=0; j<this.columns; j++) {
-                let neighbourMineCount = this.getNeighbourMineCount(i, j);
-                this.grid[i][j].setNeighbourMineCount(neighbourMineCount);
             }
         }
     }
@@ -112,6 +108,18 @@ export default class Board {
             }
         });
         return count;
+    }
+
+    /**
+     * Populates squares with their neighbour mine count
+     */
+    populateNeighbourMineCount() {
+        for (let i=0; i<this.rows; i++) {
+            for (let j=0; j<this.columns; j++) {
+                let neighbourMineCount = this.getNeighbourMineCount(i, j);
+                this.grid[i][j].setNeighbourMineCount(neighbourMineCount);
+            }
+        }
     }
 
     /**
@@ -186,6 +194,15 @@ export default class Board {
 
                 // left click
                 button.onclick = () => {
+                    if (this.isFirstClick) {
+                        // TODO place cleared mines somewhere else
+                        square.setIsMine(false);
+                        this.loopNeighbours(i, j, (neighbourRowIndex, neighbourColIndex) => {
+                            this.grid[neighbourRowIndex][neighbourColIndex].setIsMine(false);
+                        });
+                        this.populateNeighbourMineCount();
+                        this.isFirstClick = false;
+                    }
                     if (square.getIsOpened()) this.chordSquare(i, j);
                     else this.openSquare(i, j);
                 }
