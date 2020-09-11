@@ -47,8 +47,8 @@ export default class Square {
     }
 
     getButtonContents() {
-        if (this.isFlagged) return "⛳";
-        if (this.isOpened === false) return "❓";
+        if (this.isFlagged) return "🔺";
+        if (this.isOpened === false) return "";
         else if (this.isMine === true) return "⭐";
         else if (this.neighbourMineCount === 0) return " ";
 
