@@ -27,7 +27,15 @@ export default class Square {
     }
 
     open() {
-        this.opened = true;
+        if (!this.isFlagged) {
+            this.opened = true;
+        }
+    }
+
+    flag() {
+        if (!this.opened) {
+            this.isFlagged ^= true;
+        }
     }
 
     getButtonContents() {

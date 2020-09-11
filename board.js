@@ -126,6 +126,13 @@ export default class Board {
         this.render();
     }
 
+    flagSquare(rowIndex, colIndex) {
+        let square = this.grid[rowIndex][colIndex];
+        square.flag();
+
+        this.render();
+    }
+
     /**
      * Renders the board
      */
@@ -137,8 +144,16 @@ export default class Board {
             for (let j=0; j<this.columns; j++) {
                 let square = this.grid[i][j];
                 let button = square.makeButton();
+
+                // left click
                 button.onclick = () => {
                     this.openSquare(i, j);
+                }
+
+                // right click
+                button.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    this.flagSquare(i, j);
                 }
                 rowElement.append(button);
             }
