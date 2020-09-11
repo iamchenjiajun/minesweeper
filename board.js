@@ -133,6 +133,7 @@ export default class Board {
         this.clearBoardElement();
         for (let i=0; i<this.rows; i++) {
             let rowElement = document.createElement("div");
+            rowElement.className = "minesquare-row";
             for (let j=0; j<this.columns; j++) {
                 let square = this.grid[i][j];
                 let button = square.makeButton();
