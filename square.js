@@ -5,7 +5,7 @@ export default class Square {
         this.neighbourMineCount = 0;
         this.isFlagged = false;
 
-        if (Math.random() > 0.9) {
+        if (Math.random() > 0.79375) {
             this.isMine = true;
         }
     }
@@ -56,9 +56,10 @@ export default class Square {
         let content = document.createElement("p");
 
         content.className = "minesquare-content";
-        button.className = "minesquare";
+        button.classList = "minesquare";
         
         content.textContent = this.getButtonContents();
+        content.style.fontSize = "18px";
         switch(this.getButtonContents()) {
             case 1:
                 button.style.color = "skyblue";
@@ -85,6 +86,8 @@ export default class Square {
                 button.style.color = "yellow";
                 break;
         }
+
+        if (!this.isOpened) button.style.backgroundColor = "#5c3535";
         
         button.append(content);
         return button;
