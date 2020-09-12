@@ -8,9 +8,13 @@ export default class Board {
         this.grid;
         this.isFirstClick;
         this.mineCount = 0;
+        this.flagCount = 0;
         this.resetBoard();
     }
 
+    /**
+     * Reset the board state
+     */
     resetBoard() {
         this.isFirstClick = true;
         this.create2dArray();
@@ -41,6 +45,7 @@ export default class Board {
                 }
             }
         }
+        this.flagCount = this.mineCount;
     }
 
     /**
@@ -122,6 +127,9 @@ export default class Board {
         }
     }
     
+    /**
+     * Reveals all mines on the board
+     */
     revealMines() {
         for (let i=0; i<this.rows; i++) {
             for (let j=0; j<this.columns; j++) {
@@ -180,6 +188,11 @@ export default class Board {
         this.render();
     }
 
+    /**
+     * Chords a square at a given coordinate
+     * @param {Number} rowIndex 
+     * @param {Number} colIndex 
+     */
     chordSquare(rowIndex, colIndex) {
         let square = this.grid[rowIndex][colIndex];
         if (!square.getIsOpened()) {
