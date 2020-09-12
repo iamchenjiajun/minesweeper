@@ -121,6 +121,19 @@ export default class Board {
             }
         }
     }
+    
+    revealMines() {
+        for (let i=0; i<this.rows; i++) {
+            for (let j=0; j<this.columns; j++) {
+                let square = this.grid[i][j];
+                if (square.getIsMine()) {
+                    square.open();
+                }
+            }
+        }
+
+        this.render();
+    }
 
     /**
      * Opens the square at given coordinate
@@ -137,8 +150,8 @@ export default class Board {
 
         // checks for mine
         if (square.getIsMine()) {
+            this.revealMines();
             alert("You lose!");
-            this.resetBoard();
             return;
         }
 
