@@ -40,10 +40,8 @@ export default class Square {
         }
     }
 
-    flag() {
-        if (!this.isOpened) {
-            this.isFlagged ^= true;
-        }
+    setIsFlagged(isFlagged) {
+        this.isFlagged = isFlagged;
     }
 
     getButtonContents() {

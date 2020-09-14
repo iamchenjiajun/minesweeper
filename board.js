@@ -9,6 +9,7 @@ export default class Board {
      */
     constructor(rows, columns, mineCount) {
         this.boardElement = document.getElementById("minesweeper");
+        this.flagCountElement = document.getElementById("minesweeper-flagcount");
         this.rows = rows;
         this.columns = columns;
         this.grid;
@@ -218,7 +219,21 @@ export default class Board {
      */
     flagSquare(rowIndex, colIndex) {
         let square = this.grid[rowIndex][colIndex];
-        square.flag();
+
+        // Guard clauses
+        if (square.getIsOpened()) {
+            return;
+        } else if (this.isFirstClick) {
+            return;
+        }
+
+        if (square.getIsFlagged()) {
+            square.setIsFlagged(false);
+            this.flagCount++;
+        } else if (this.flagCount > 0) {
+            square.setIsFlagged(true);
+            this.flagCount--;
+        }
 
         this.render();
     }
@@ -245,6 +260,7 @@ export default class Board {
      * Renders the board
      */
     render() {
+        this.renderStats();
         this.clearBoardElement();
         for (let i=0; i<this.rows; i++) {
             let rowElement = document.createElement("div");
@@ -271,5 +287,12 @@ export default class Board {
             }
             this.boardElement.append(rowElement);
         }
+    }
+
+    /**
+     * Renders the flag/mine count
+     */
+    renderStats() {
+        this.flagCountElement.textContent = `Flags remaining: ${this.flagCount}`;
     }
 }
