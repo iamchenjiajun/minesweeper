@@ -10,45 +10,29 @@ export default class Board {
     constructor(rows, columns, mineCount) {
         this.boardElement = document.getElementById("minesweeper");
         this.flagCountElement = document.getElementById("minesweeper-flagcount");
+
+        this.grid;
         this.rows = rows;
         this.columns = columns;
-        this.grid;
-        this.isFirstClick = true;
         this.mineCount = mineCount;
-        this.flagCount = this.mineCount;
-        this.resetBoard();
-    }
-
-    /**
-     * Reset the board state
-     */
-    resetBoard() {
+        this.flagCount = mineCount;
         this.isFirstClick = true;
-        this.create2dArray();
-        this.populateWithSquares();
+
+        this.create2dSquareArray();
         this.render();
     }
 
     /**
      * Creates a 2D array in the grid
      */
-    create2dArray() {
+    create2dSquareArray() {
         this.grid = new Array(this.rows);
         for (let i=0; i<this.rows; i++) {
             this.grid[i] = new Array(this.columns);
-        }
-    }
-
-    /**
-     * Populates the grid with squares
-     */
-    populateWithSquares() {
-        for (let i=0; i<this.rows; i++) {
             for (let j=0; j<this.columns; j++) {
                 this.grid[i][j] = new Square();
             }
         }
-        this.flagCount = this.mineCount;
     }
 
     /**
@@ -59,11 +43,12 @@ export default class Board {
         while (mineAllocationCount > 0) {
             let randomRow = Math.floor(Math.random() * this.rows);
             let randomCol = Math.floor(Math.random() * this.columns);
+            let randomSquare = this.grid[randomRow][randomCol];
 
             // check that it's not already a mine, and not one of the opening squares
-            if (!this.grid[randomRow][randomCol].getIsMine() && !this.grid[randomRow][randomCol].getIsOpened()) {
+            if (!randomSquare.getIsMine() && !randomSquare.getIsOpened()) {
                 mineAllocationCount--;
-                this.grid[randomRow][randomCol].setIsMine(true);
+                randomSquare.setIsMine(true);
             }
         }
     }
