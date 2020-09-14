@@ -4,10 +4,6 @@ export default class Square {
         this.isMine = false;
         this.neighbourMineCount = 0;
         this.isFlagged = false;
-
-        if (Math.random() > 0.8) {
-            this.isMine = true;
-        }
     }
 
     getIsOpened() {
@@ -28,6 +24,10 @@ export default class Square {
 
     setIsMine(isMine) {
         this.isMine = isMine;
+    }
+
+    setIsOpened(isOpened) {
+        this.isOpened = isOpened;
     }
 
     getNeighbourMineCount() {

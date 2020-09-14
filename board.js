@@ -1,14 +1,20 @@
 import Square from './square.js';
 
 export default class Board {
-    constructor(rows, columns) {
+    /**
+     * Instantiates an instance of Board
+     * @param {Number} rows 
+     * @param {Number} columns 
+     * @param {Number} mineCount 
+     */
+    constructor(rows, columns, mineCount) {
         this.boardElement = document.getElementById("minesweeper");
         this.rows = rows;
         this.columns = columns;
         this.grid;
-        this.isFirstClick;
-        this.mineCount = 0;
-        this.flagCount = 0;
+        this.isFirstClick = true;
+        this.mineCount = mineCount;
+        this.flagCount = this.mineCount;
         this.resetBoard();
     }
 
@@ -19,7 +25,6 @@ export default class Board {
         this.isFirstClick = true;
         this.create2dArray();
         this.populateWithSquares();
-        this.populateNeighbourMineCount();
         this.render();
     }
 
@@ -40,12 +45,26 @@ export default class Board {
         for (let i=0; i<this.rows; i++) {
             for (let j=0; j<this.columns; j++) {
                 this.grid[i][j] = new Square();
-                if (this.grid[i][j].getIsMine()) {
-                    this.mineCount++;
-                }
             }
         }
         this.flagCount = this.mineCount;
+    }
+
+    /**
+     * Populates the grid with mines
+     */
+    populateWithMines() {
+        let mineAllocationCount = this.mineCount;
+        while (mineAllocationCount > 0) {
+            let randomRow = Math.floor(Math.random() * this.rows);
+            let randomCol = Math.floor(Math.random() * this.columns);
+
+            // check that it's not already a mine, and not one of the opening squares
+            if (!this.grid[randomRow][randomCol].getIsMine() && !this.grid[randomRow][randomCol].getIsOpened()) {
+                mineAllocationCount--;
+                this.grid[randomRow][randomCol].setIsMine(true);
+            }
+        }
     }
 
     /**
@@ -144,6 +163,22 @@ export default class Board {
     }
 
     /**
+     * Opens the square and its neighbours at given coordinate, then generate mines
+     * @param {Number} rowIndex 
+     * @param {Number} colIndex 
+     */
+    openSquareFirstClick(rowIndex, colIndex) {
+        // open the mines so they cannot be set to mines by mine allocation
+        this.grid[rowIndex][colIndex].setIsOpened(true);
+        this.loopNeighbours(rowIndex, colIndex, (neighbourRowIndex, neighbourColIndex) => {
+            this.grid[neighbourRowIndex][neighbourColIndex].setIsOpened(true);
+        });
+        this.populateWithMines();
+        this.populateNeighbourMineCount();
+        this.isFirstClick = false;
+    }
+
+    /**
      * Opens the square at given coordinate
      * @param {Number} rowIndex 
      * @param {Number} colIndex 
@@ -221,13 +256,7 @@ export default class Board {
                 // left click
                 button.onclick = () => {
                     if (this.isFirstClick) {
-                        // TODO place cleared mines somewhere else
-                        square.setIsMine(false);
-                        this.loopNeighbours(i, j, (neighbourRowIndex, neighbourColIndex) => {
-                            this.grid[neighbourRowIndex][neighbourColIndex].setIsMine(false);
-                        });
-                        this.populateNeighbourMineCount();
-                        this.isFirstClick = false;
+                        this.openSquareFirstClick(i, j);
                     }
                     if (square.getIsOpened()) this.chordSquare(i, j);
                     else this.openSquare(i, j);
