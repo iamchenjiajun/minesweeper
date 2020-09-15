@@ -90,7 +90,7 @@ export default class Square {
         }
 
         if (!this.isOpened && !this.isFlagged) {
-            button.style.backgroundColor = "#5c3535";
+            button.classList.add("minesquare-unopened");
         }
         
         button.append(content);

@@ -30,7 +30,7 @@ html, body {
 }
 
 .minesquare:hover {
-    background-color: gray;
+    filter: brightness(150%);
 }
 
 .minesquare-row {
@@ -42,4 +42,8 @@ html, body {
     font-weight: bold;
     margin: 0;
     padding: 0;
+}
+
+.minesquare-unopened {
+    background-color: #5c3535;
 }
