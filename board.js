@@ -10,6 +10,7 @@ export default class Board {
     constructor(rows, columns, mineCount) {
         this.boardElement = document.getElementById("minesweeper");
         this.flagCountElement = document.getElementById("minesweeper-flagcount");
+        this.safeSquareCountElement = document.getElementById("minesweeper-safesquarecount");
 
         this.grid;
         this.rows = rows;
@@ -310,5 +311,6 @@ export default class Board {
      */
     renderStats() {
         this.flagCountElement.textContent = `Flags remaining: ${this.flagCount}`;
+        this.safeSquareCountElement.textContent = `Safe squares remaining: ${this.safeSquareCount}`;
     }
 }
