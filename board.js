@@ -154,8 +154,6 @@ export default class Board {
                 }
             }
         }
-
-        this.render();
     }
 
     /**
@@ -171,7 +169,6 @@ export default class Board {
                 }
             }
         }
-        this.render();
     }
 
     /**
@@ -212,7 +209,6 @@ export default class Board {
 
         // checks for mine
         if (square.getIsMine()) {
-            this.revealMines();
             this.isClickedMine = true;
             return;
         }
@@ -225,9 +221,6 @@ export default class Board {
                 }
             });
         }
-
-        // re-render the board
-        this.render();
     }
 
     /**
@@ -252,8 +245,6 @@ export default class Board {
             square.setIsFlagged(true);
             this.flagCount--;
         }
-
-        this.render();
     }
 
     /**
@@ -280,6 +271,7 @@ export default class Board {
     checkGameState() {
         if (this.isClickedMine) {
             this.gameState = -1;
+            this.revealMines();
             alert("You lose!");
         } else if (this.safeSquareCount === 0) {
             this.gameState = 1;
@@ -310,13 +302,15 @@ export default class Board {
                     if (square.getIsOpened()) this.chordSquare(i, j);
                     else this.openSquare(i, j);
                     this.checkGameState();
+                    this.render();
                 }
 
                 // right click
                 button.oncontextmenu = (e) => {
-                    if (this.gameState !== 0) return;
                     e.preventDefault();
+                    if (this.gameState !== 0) return;
                     this.flagSquare(i, j);
+                    this.render();
                 }
                 rowElement.append(button);
             }
