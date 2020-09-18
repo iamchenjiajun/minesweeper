@@ -1,4 +1,5 @@
 import Square from './square.js';
+import Timer from './timer.js'
 
 export default class Board {
     /**
@@ -11,6 +12,7 @@ export default class Board {
         this.boardElement = document.getElementById("minesweeper");
         this.flagCountElement = document.getElementById("minesweeper-flagcount");
         this.safeSquareCountElement = document.getElementById("minesweeper-safesquarecount");
+        this.timerElement = document.getElementById("minesweeper-timer");
 
         this.grid;
         this.rows = rows;
@@ -21,6 +23,8 @@ export default class Board {
         this.isFirstClick = true;
         this.gameState = 0;
         this.isClickedMine = false;
+
+        this.timer = new Timer();
 
         this.create2dSquareArray();
         this.render();
@@ -276,7 +280,7 @@ export default class Board {
         } else if (this.safeSquareCount === 0) {
             this.gameState = 1;
             this.flagAllMines();
-            alert("You win!");
+            alert(`You win! Time taken: ${this.timer.getTiming()/1000} seconds!`);
         }
     }
 
