@@ -159,6 +159,22 @@ export default class Board {
     }
 
     /**
+     * Flags all mines on the board
+     */
+    flagAllMines() {
+        this.flagCount = 0;
+        for (let i=0; i<this.rows; i++) {
+            for (let j=0; j<this.columns; j++) {
+                let square = this.grid[i][j];
+                if (square.getIsMine()) {
+                    square.setIsFlagged(true);
+                }
+            }
+        }
+        this.render();
+    }
+
+    /**
      * Opens the square and its neighbours at given coordinate, then generate mines
      * @param {Number} rowIndex 
      * @param {Number} colIndex 
@@ -267,6 +283,7 @@ export default class Board {
             alert("You lose!");
         } else if (this.safeSquareCount === 0) {
             this.gameState = 1;
+            this.flagAllMines();
             alert("You win!");
         }
     }
@@ -297,6 +314,7 @@ export default class Board {
 
                 // right click
                 button.oncontextmenu = (e) => {
+                    if (this.gameState !== 0) return;
                     e.preventDefault();
                     this.flagSquare(i, j);
                 }
