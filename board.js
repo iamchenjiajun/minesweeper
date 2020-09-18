@@ -15,8 +15,11 @@ export default class Board {
         this.rows = rows;
         this.columns = columns;
         this.mineCount = mineCount;
+        this.safeSquareCount = this.rows * this.columns - mineCount;
         this.flagCount = mineCount;
         this.isFirstClick = true;
+        this.gameState = 0;
+        this.isClickedMine = false;
 
         this.create2dSquareArray();
         this.render();
@@ -81,7 +84,13 @@ export default class Board {
     loopNeighbours(rowIndex, colIndex, neighbourFunction) {
         for (let i=-1; i<=1; i++) {
             for (let j=-1; j<=1; j++) {
+                // check within range
                 if (!this.checkValidIndex(rowIndex+i, colIndex+j)) {
+                    continue;
+                }
+
+                // prevent looping self
+                if (i === 0 && j === 0) {
                     continue;
                 }
                 neighbourFunction(rowIndex+i, colIndex+j);
@@ -156,8 +165,10 @@ export default class Board {
     openSquareFirstClick(rowIndex, colIndex) {
         // open the mines so they cannot be set to mines by mine allocation
         this.grid[rowIndex][colIndex].setIsOpened(true);
+        this.safeSquareCount--;
         this.loopNeighbours(rowIndex, colIndex, (neighbourRowIndex, neighbourColIndex) => {
             this.grid[neighbourRowIndex][neighbourColIndex].setIsOpened(true);
+            this.safeSquareCount--;
         });
         this.populateWithMines();
         this.populateNeighbourMineCount();
@@ -174,13 +185,18 @@ export default class Board {
         let square = this.grid[rowIndex][colIndex];
         if (square.getIsFlagged()) return;
 
+        // set square count
+        if (!square.getIsOpened()) {
+            this.safeSquareCount--;
+        }
+
         // open the square
         square.open();
 
         // checks for mine
         if (square.getIsMine()) {
             this.revealMines();
-            alert("You lose!");
+            this.isClickedMine = true;
             return;
         }
 
@@ -242,6 +258,19 @@ export default class Board {
     }
 
     /**
+     * Checks the state of the game
+     */
+    checkGameState() {
+        if (this.isClickedMine) {
+            this.gameState = -1;
+            alert("You lose!");
+        } else if (this.safeSquareCount === 0) {
+            this.gameState = 1;
+            alert("You win!");
+        }
+    }
+
+    /**
      * Renders the board
      */
     render() {
@@ -256,11 +285,13 @@ export default class Board {
 
                 // left click
                 button.onclick = () => {
+                    if (this.gameState !== 0) return;
                     if (this.isFirstClick) {
                         this.openSquareFirstClick(i, j);
                     }
                     if (square.getIsOpened()) this.chordSquare(i, j);
                     else this.openSquare(i, j);
+                    this.checkGameState();
                 }
 
                 // right click
