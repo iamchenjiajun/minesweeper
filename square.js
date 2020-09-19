@@ -89,7 +89,7 @@ export default class Square {
                 break;
         }
 
-        if (!this.isOpened && !this.isFlagged) {
+        if (!this.isOpened) {
             button.classList.add("minesquare-unopened");
         }
         
