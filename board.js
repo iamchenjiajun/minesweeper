@@ -274,14 +274,30 @@ export default class Board {
      */
     checkGameState() {
         if (this.isClickedMine) {
-            this.gameState = -1;
-            this.revealMines();
-            alert("You lose!");
+            this.lose();
         } else if (this.safeSquareCount === 0) {
-            this.gameState = 1;
-            this.flagAllMines();
-            alert(`You win! Time taken: ${this.timer.getTiming()/1000} seconds!`);
+            this.win();
         }
+    }
+    
+    /**
+     * Wins the game
+     */
+    win() {
+        this.gameState = 1;
+        this.flagAllMines();
+        this.render();
+        alert(`You win! Time taken: ${this.timer.getTiming()/1000} seconds!`);
+    }
+
+    /**
+     * Loses the game
+     */
+    lose() {
+        this.gameState = -1;
+        this.revealMines();
+        this.render();
+        alert("You lose!");
     }
 
     /**
