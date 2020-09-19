@@ -9,7 +9,7 @@ export default class Board {
      * @param {Number} mineCount 
      */
     constructor(rows, columns, mineCount) {
-        this.boardElement = document.getElementById("minesweeper");
+        this.boardElement = document.getElementById("minesweeper-board");
         this.flagCountElement = document.getElementById("minesweeper-flagcount");
         this.safeSquareCountElement = document.getElementById("minesweeper-safesquarecount");
         this.timerElement = document.getElementById("minesweeper-timer");

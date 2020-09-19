@@ -10,7 +10,7 @@ html, body {
     color: #fff8e7;
 }
 
-#minesweeper {
+#minesweeper-board {
     display: flex;
     flex-direction: column;
     align-items: center;
