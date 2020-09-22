@@ -9,10 +9,17 @@ export default class Board {
      * @param {Number} mineCount 
      */
     constructor(rows, columns, mineCount) {
+        this.resetBoard(rows, columns, mineCount);
+    }
+
+    /**
+     * Resets the board
+     * @param {Number} rows 
+     * @param {Number} columns 
+     * @param {Number} mineCount 
+     */
+    resetBoard(rows, columns, mineCount) {
         this.boardElement = document.getElementById("minesweeper-board");
-        this.flagCountElement = document.getElementById("minesweeper-flagcount");
-        this.safeSquareCountElement = document.getElementById("minesweeper-safesquarecount");
-        this.timerElement = document.getElementById("minesweeper-timer");
 
         this.grid;
         this.rows = rows;
@@ -191,6 +198,7 @@ export default class Board {
         this.populateWithMines();
         this.populateNeighbourMineCount();
         this.isFirstClick = false;
+        this.timer.startTimer();
     }
 
     /**
@@ -287,6 +295,7 @@ export default class Board {
         this.gameState = 1;
         this.flagAllMines();
         this.render();
+        this.timer.stopTimer();
         alert(`You win! Time taken: ${this.timer.getTiming()/1000} seconds!`);
     }
 
@@ -297,6 +306,7 @@ export default class Board {
         this.gameState = -1;
         this.revealMines();
         this.render();
+        this.timer.stopTimer();
         alert("You lose!");
     }
 
@@ -304,7 +314,6 @@ export default class Board {
      * Renders the board
      */
     render() {
-        this.renderStats();
         this.clearBoardElement();
         for (let i=0; i<this.rows; i++) {
             let rowElement = document.createElement("div");
@@ -336,13 +345,5 @@ export default class Board {
             }
             this.boardElement.append(rowElement);
         }
-    }
-
-    /**
-     * Renders the flag/mine count
-     */
-    renderStats() {
-        this.flagCountElement.textContent = `Flags remaining: ${this.flagCount}`;
-        this.safeSquareCountElement.textContent = `Safe squares remaining: ${this.safeSquareCount}`;
     }
 }

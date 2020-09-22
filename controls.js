@@ -21,15 +21,15 @@ export default class Controls {
         this.controlElement.append(this.buttonDifficulty3);
 
         this.buttonDifficulty1.onclick = () => {
-            this.board = new Board(9, 9, 10);
+            this.board.resetBoard(9, 9, 10);
         }
 
         this.buttonDifficulty2.onclick = () => {
-            this.board = new Board(16, 16, 40);
+            this.board.resetBoard(16, 16, 40);
         }
 
         this.buttonDifficulty3.onclick = () => {
-            this.board = new Board(16, 30, 99);
+            this.board.resetBoard(16, 30, 99);
         }
     }
 }
