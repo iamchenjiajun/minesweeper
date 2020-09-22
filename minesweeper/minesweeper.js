@@ -11,7 +11,7 @@ export default class Minesweeper {
         this.minesweeperElement.append(this.createElementWithId("div", "minesweeper-stats"));
         this.minesweeperElement.append(this.createElementWithId("div", "minesweeper-controls"))
 
-        this.board = new Board(16, 30, 99);
+        this.board = new Board(16, 16, 40);
         this.controls = new Controls(this.board, document.getElementById("minesweeper-controls"));
         this.stats = new Stats(this.board, document.getElementById("minesweeper-stats"));
     }
