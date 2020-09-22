@@ -1,15 +1,29 @@
 import Board from './board.js';
+import Controls from './controls.js';
 
-window.addEventListener("load", () => {
-    let board = new Board(16, 30, 99);
+export default class Minesweeper {
+    constructor() {
+        let minesweeperElement = document.getElementById("minesweeper");
 
-    document.getElementById("minesweeper-difficulty-1").onclick = () => {
-        board = new Board(9, 9, 10);
+        // main board
+        minesweeperElement.append(this.createElementWithId("div", "minesweeper-board"));
+
+        // stats
+        minesweeperElement.append(this.createElementWithId("div", "minesweeper-flagcount"));
+        minesweeperElement.append(this.createElementWithId("div", "minesweeper-safesquarecount"));
+        minesweeperElement.append(this.createElementWithId("div", "minesweeper-timer"));
+
+        // controls
+        minesweeperElement.append(this.createElementWithId("div", "minesweeper-controls"))
+
+        // setup
+        this.board = new Board(16, 30, 99);
+        this.controls = new Controls(this.board, document.getElementById("minesweeper-controls"));
     }
-    document.getElementById("minesweeper-difficulty-2").onclick = () => {
-        board = new Board(16, 16, 40);
+
+    createElementWithId(tagName, id) {
+        let element = document.createElement(tagName);
+        element.id = id;
+        return element;
     }
-    document.getElementById("minesweeper-difficulty-3").onclick = () => {
-        board = new Board(16, 30, 99);
-    }
-});
+}
